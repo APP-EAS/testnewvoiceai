@@ -95,7 +95,7 @@
                     <div class="flex justify-center mb-4">
                         <div class="bg-gray-200 rounded-full p-1">
                             <button @click="billingCycle = 'monthly'" class="switch-tab px-4 py-2 rounded-full text-sm sm:text-base" :class="{ 'active': billingCycle === 'monthly' }">Monthly</button>
-                            <button @click="billingCycle = 'annual'" class="switch-tab px-4 py-2 rounded-full text-sm sm:text-base" :class="{ 'active': billingCycle === 'annual' }">Annual (Get 3 Months FREE!)</button>
+                            <button @click="billingCycle = 'annual'" class="switch-tab px-4 py-2 rounded-full text-sm sm:text-base" :class="{ 'active': billingCycle === 'annual' }">Annual (Save 25%)</button>
                         </div>
                     </div>
                     <p class="text-sm text-center mt-2 mb-8 text-indigo-600 font-semibold">Limited Time Offer: Lock in current prices with our annual plan!</p>
@@ -116,7 +116,7 @@
                                     <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>AI-powered SMS conversations</li>
                                 </template>
                                 <template x-if="plan === 'ai'">
-                                    <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Intelligent lead qualification process</li>
+                                    <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Advanced lead qualification</li>
                                 </template>
                             </ul>
                             <p class="font-semibold text-indigo-600" x-text="plan === 'ai' ? 'Continue with AI-powered SMS conversations' : 'Continue with Basic Plan'"></p>
@@ -170,7 +170,6 @@
                 <div class="bg-white rounded-lg shadow-lg p-6">
                     <h3 class="text-xl font-bold mb-4">Custom Voice Integration</h3>
                     <p>Tailor the AI's voice and personality to match your brand, creating a consistent and professional experience for your callers.</p>
-                </div>
             </div>
         </div>
     </section>
@@ -195,6 +194,42 @@
         </div>
     </section>
 
+    <section class="bg-gray-100 py-20" id="roi-calculator">
+        <div class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-16">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-8 text-center">Calculate Your Potential ROI</h2>
+            <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8">
+                <p class="mb-4">See how much additional revenue you could generate with InstantConnect Voice:</p>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="missed-calls">
+                        Estimated Missed Calls per Week:
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="missed-calls" type="number" placeholder="#">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="avg-deal-value">
+                        Average Deal Value:
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="avg-deal-value" type="number" placeholder="$">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="close-rate">
+                        Current Close Rate (%):
+                    </label>
+                    <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="close-rate" type="number" placeholder="%">
+                </div>
+                <button class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" onclick="calculateROI()">
+                    See Your Potential Growth
+                </button>
+                <div id="roi-results" class="mt-4 hidden">
+                    <h3 class="font-bold text-lg mb-2">Your Potential Growth:</h3>
+                    <p>Additional Monthly Revenue: <span id="additional-revenue"></span></p>
+                    <p>Potential Annual Revenue Increase: <span id="annual-increase"></span></p>
+                    <p>Return on Investment: <span id="roi-percentage"></span>%</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer class="bg-indigo-900 text-white py-8">
         <div class="max-w-6xl mx-auto px-6 sm:px-8 lg:px-16">
             <div class="flex flex-wrap justify-between items-center">
@@ -211,8 +246,25 @@
     </footer>
 
     <script>
-        // This script is intentionally left empty as all the necessary functionality
-        // is handled by Alpine.js directives in the HTML.
+        function calculateROI() {
+            const missedCalls = parseFloat(document.getElementById('missed-calls').value);
+            const avgDealValue = parseFloat(document.getElementById('avg-deal-value').value);
+            const closeRate = parseFloat(document.getElementById('close-rate').value) / 100;
+
+            if (isNaN(missedCalls) || isNaN(avgDealValue) || isNaN(closeRate)) {
+                alert('Please enter valid numbers for all fields.');
+                return;
+            }
+
+            const potentialMonthlyRevenue = missedCalls * 4 * avgDealValue * closeRate * 2; // Assuming 4 weeks in a month and 100% improvement
+            const potentialAnnualRevenue = potentialMonthlyRevenue * 12;
+            const roi = ((potentialAnnualRevenue - (997 * 12)) / (997 * 12) * 100).toFixed(2);
+
+            document.getElementById('additional-revenue').textContent = '$' + potentialMonthlyRevenue.toFixed(2);
+            document.getElementById('annual-increase').textContent = '$' + potentialAnnualRevenue.toFixed(2);
+            document.getElementById('roi-percentage').textContent = roi;
+            document.getElementById('roi-results').classList.remove('hidden');
+        }
     </script>
 </body>
 </html>
