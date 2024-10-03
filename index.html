@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InstantConnect Voice | AI-Powered Call Handling Revolution</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.3.0/alpine-ie11.min.js" defer></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        }
+        .plan-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+        .best-value-tag {
+            top: -1px;
+            right: -1px;
+        }
+        .annual-savings {
+            background: linear-gradient(45deg, #10B981 0%, #34D399 100%);
+        }
+        .switch-tab {
+            transition: all 0.3s ease-in-out;
+        }
+        .switch-tab.active {
+            background-color: #4f46e5;
+            color: white;
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-900 leading-normal tracking-normal bg-gray-100">
+    <div class="min-h-screen flex flex-col justify-center" x-data="{ 
+        plan: new URLSearchParams(window.location.search).get('plan') || 'basic',
+        choice: 'voice',
+        billingCycle: 'annual',
+        getBasePlanPrice(cycle) {
+            if (cycle === 'annual') {
+                return this.plan === 'ai' ? 4467 : 2667;
+            } else {
+                return this.plan === 'ai' ? 497 : 297;
+            }
+        },
+        getVoicePlanPrice() {
+            return this.billingCycle === 'annual' ? 8967 : 997;
+        },
+        getTotalPrice() {
+            return this.choice === 'voice' ? this.getVoicePlanPrice() : this.getBasePlanPrice(this.billingCycle);
+        },
+        getAnnualSavings(planType) {
+            if (planType === 'voice') {
+                return (997 * 12) - 8967;
+            } else {
+                const monthlyPrice = this.plan === 'ai' ? 497 : 297;
+                const annualPrice = this.plan === 'ai' ? 4467 : 2667;
+                return (monthlyPrice * 12) - annualPrice;
+            }
+        },
+        completeOrder() {
+            const totalPrice = this.getTotalPrice();
+            let checkoutUrl;
+            if (totalPrice === 297) {
+                checkoutUrl = 'https://buy.stripe.com/7sIcMT3Q1aYNfUQ145';
+            } else if (totalPrice === 497) {
+                checkoutUrl = 'https://buy.stripe.com/00g28f3Q10k9fUQ147';
+            } else if (totalPrice === 997) {
+                checkoutUrl = 'https://buy.stripe.com/7sIcMT4U51od7ok28d';
+            } else if (totalPrice === 2667) {
+                checkoutUrl = 'https://buy.stripe.com/aEU7szgCN7MB7okfZ0';
+            } else if (totalPrice === 4467) {
+                checkoutUrl = 'https://buy.stripe.com/8wMcMT0DP8QF4c83cg';
+            } else if (totalPrice === 8967) {
+                checkoutUrl = 'https://buy.stripe.com/fZedQX72d6Ix6kg6ou';
+            } else {
+                alert('An error occurred. Please try again.');
+                return;
+            }
+            window.location.href = checkoutUrl;
+        }
+    }">
+        <div class="max-w-6xl mx-auto px-4 py-8 sm:px-6 lg:px-8 w-full">
+            <div class="bg-white rounded-lg shadow-xl overflow-hidden">
+                <div class="gradient-bg text-white p-8 text-center">
+                    <h1 class="text-3xl sm:text-4xl font-bold mb-4">Revolutionary AI Voice Technology: Your 24/7 Sales Team</h1>
+                    <p class="text-xl">InstantConnect: Your AI-Powered 24/7 Lead Conversion Solution</p>
+                </div>
+                <div class="p-4 sm:p-8">
+                    <div class="mb-8 text-center bg-indigo-100 p-4 sm:p-6 rounded-lg">
+                        <h2 class="text-2xl font-bold mb-4">Experience the Future of Customer Engagement</h2>
+                        <p class="mb-4">Call our demo number to hear InstantConnect Voice in action:</p>
+                        <a href="tel:+60154600955" class="text-2xl sm:text-3xl font-bold text-indigo-600 hover:text-indigo-800 transition duration-300">+60 (154) 600 0955</a>
+                    </div>
+
+                    <div class="flex justify-center mb-4">
+                        <div class="bg-gray-200 rounded-full p-1">
+                            <button @click="billingCycle = 'monthly'" class="switch-tab px-4 py-2 rounded-full text-sm sm:text-base" :class="{ 'active': billingCycle === 'monthly' }">Monthly</button>
+                            <button @click="billingCycle = 'annual'" class="switch-tab px-4 py-2 rounded-full text-sm sm:text-base" :class="{ 'active': billingCycle === 'annual' }">Annual (Get 3 Months FREE!)</button>
+                        </div>
+                    </div>
+                    <p class="text-sm text-center mt-2 mb-8 text-indigo-600 font-semibold">Limited Time Offer: Lock in current prices with our annual plan!</p>
+
+                    <div class="flex flex-col lg:flex-row justify-center items-stretch space-y-8 lg:space-y-0 lg:space-x-8 mb-8">
+                        <div class="flex-1 bg-white rounded-lg p-6 border-2 transition-all duration-300 plan-hover cursor-pointer relative" :class="{ 'border-indigo-500': choice === 'current', 'border-gray-200': choice !== 'current' }" @click="choice = 'current'">
+                            <h2 class="text-xl sm:text-2xl font-semibold mb-4 text-indigo-800" x-text="plan === 'ai' ? 'InstantConnect with AI' : 'InstantConnect Basic'"></h2>
+                            <p class="text-3xl sm:text-4xl font-bold mb-4 text-indigo-600">$<span x-text="getBasePlanPrice(billingCycle)"></span><span class="text-lg font-normal text-gray-600" x-text="billingCycle === 'monthly' ? '/mo' : '/yr'"></span></p>
+                            <div x-show="billingCycle === 'annual'" class="annual-savings text-center p-2 rounded-lg mb-4">
+                                <p class="font-semibold text-white">Save $<span x-text="getAnnualSavings('current')"></span> per year!</p>
+                            </div>
+                            <p class="mb-4 text-indigo-600 font-semibold" x-text="plan === 'ai' ? 'Advanced AI-powered SMS conversations for higher engagement and conversion rates' : 'Reliable SMS-based lead capture within 2-3 minutes of a missed call'"></p>
+                            <ul class="space-y-2 mb-6">
+                                <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Prompt SMS response to missed calls</li>
+                                <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>24/7 lead capture</li>
+                                <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Real-time app notifications</li>
+                                <template x-if="plan === 'ai'">
+                                    <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>AI-powered SMS conversations</li>
+                                </template>
+                                <template x-if="plan === 'ai'">
+                                    <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Intelligent lead qualification process</li>
+                                </template>
+                            </ul>
+                            <p class="font-semibold text-indigo-600" x-text="plan === 'ai' ? 'Continue with AI-powered SMS conversations' : 'Continue with Basic Plan'"></p>
+                        </div>
+                        <div class="flex-1 bg-indigo-50 rounded-lg p-6 border-2 border-indigo-500 transition-all duration-300 plan-hover cursor-pointer relative" @click="choice = 'voice'">
+                            <div class="absolute best-value-tag bg-green-500 text-white px-3 py-1 rounded-bl-lg text-sm font-semibold">BEST VALUE</div>
+                            <h2 class="text-xl sm:text-2xl font-semibold mb-4 text-indigo-800">InstantConnect Voice</h2>
+                            <p class="text-3xl sm:text-4xl font-bold mb-4 text-indigo-600">$<span x-text="getVoicePlanPrice()"></span><span class="text-lg font-normal text-gray-600" x-text="billingCycle === 'monthly' ? '/mo' : '/yr'"></span></p>
+                            <div x-show="billingCycle === 'annual'" class="annual-savings text-center p-2 rounded-lg mb-4">
+                                <p class="font-semibold text-white">Save $<span x-text="getAnnualSavings('voice')"></span> per year!</p>
+                            </div>
+                            <p class="mb-4 text-indigo-600 font-semibold">Supercharge lead conversion with AI-powered voice calls for personalized interactions that drive superior results.</p>
+                            <ul class="space-y-2 mb-6">
+                                <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><strong class="text-indigo-800">24/7 AI call answering with human-like conversations</strong></li>
+                                <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><strong class="text-indigo-800">Advanced lead qualification and scoring</strong></li>
+                                <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><strong class="text-indigo-800">Intelligent call routing to maximize team efficiency</strong></li>
+                                <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><strong class="text-indigo-800">Real-time appointment scheduling</strong></li>
+                                <li class="flex items-center"><svg class="h-5 w-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg><strong class="text-indigo-800">Comprehensive analytics to optimize your sales process</strong></li>
+                            </ul>
+                            <p class="font-semibold text-green-600">Upgrade to AI-powered voice conversations</p>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <p class="mb-4 text-2xl font-bold text-indigo-800">Total: $<span x-text="getTotalPrice()"></span><span class="text-lg font-normal text-gray-600" x-text="billingCycle === 'monthly' ? '/mo' : '/yr'"></span></p>
+                        <button @click="completeOrder()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-full transition duration-300 inline-block text-lg shadow-lg animate-pulse">
+                            <span x-text="choice === 'voice' ? 'Activate Your AI-Powered Voice Solution' : 'Continue with Selected Plan'"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <p class="text-center text-sm text-gray-500 mt-4">Note: Custom setup and usage fees may apply. Contact us for details.</p>
+        </div>
+    </div>
+</body>
+</html>
